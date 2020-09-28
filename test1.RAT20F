@@ -1,0 +1,29 @@
+/*
+    Test Case 1: Simple arithmetic
+*/  
+
+int myInteger = 10;
+int myInteger2 = 5;
+boolean greaterThan10; 
+
+int result = myInteger + myInteger2;
+
+if(result > 10)
+    greaterThan10 = true;
+fi
+
+real myReal1 = 10.50;
+real myReal2 = 5.75;
+real myReal3 = 1.10;
+
+real resultReal = myReal1 - myReal2;
+
+resultReal = resultReal * 2 / myReal2;
+
+
+if(resultReal == 15.75)
+
+    return true;
+fi
+
+return false;
