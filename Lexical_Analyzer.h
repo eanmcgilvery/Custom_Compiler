@@ -12,11 +12,17 @@ class Lexical_Analyzer
       Lexical_Analyzer();    
 
       // Main function to be called
-      std::unordered_map<std::string,std::string> lexer();
-
+      std::unordered_map<std::string,std::string> lexer(std::string&);
+      std::string isKeyword(std::string&);
+      std::string isDouble(std::string&);
+      std::string whatTokenType(std::string&);
+      std::string isOperator(std::string&);
 
     private:
         // Finite number of elements
+
+        Fsm mainMachine_;
+
         const std::set<std::string> _keywords {"if", "fi", "int", "boolean", "real","else", "return", "true", "false", "put","get", "while" };
         const std::set<std::string> _separators {"(", ")", ";", "{","}" ,"\\*", "*/", ","};
         const std::set<std::string> _operators {"=", "==", "<", ">", ">=", "<=", "+", "-", "/", "!=", "!","*"};
