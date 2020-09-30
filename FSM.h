@@ -13,7 +13,7 @@ class Fsm
     
     size_t isValidInput(char);
     const size_t WhereAreWe() {return whereAreWe_;}
-    void WhereAreWe(size_t& input) {whereAreWe_ = input};
+    void WhereAreWe(size_t& input) {whereAreWe_ = input;}
 
   private:
     std::set<size_t> acceptingStates_{3,5,6,10,11,16};

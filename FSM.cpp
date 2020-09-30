@@ -3,9 +3,9 @@
 
 Fsm::Fsm()
 {
-    size_t whereAreWe_ = 0;
-    size_t columnInput_ = 0; 
-    size_t currentState_ = 1; 
+    whereAreWe_ = 0;
+    columnInput_ = 0;
+    currentState_ = 1;
 
     // Load in contents of 2D Vector
     mainTable_.push_back(columns_);
@@ -22,7 +22,7 @@ Fsm::Fsm()
     mainTable_.push_back(nonCompoundOperators_);
     mainTable_.push_back(notOperatorOption);
     mainTable_.push_back(greaterThanOperatorOption);
-    mainTable_.push_back(LessThanOperatorOption);
+    mainTable_.push_back(LessThanOperatorOption); 
     mainTable_.push_back(equalOperatorOption);
     mainTable_.push_back(doubleEqualOperationOption);
 }
@@ -53,7 +53,8 @@ std::string Fsm::computeToken(std::string inputString) // "if(a > b)"
             // Log what it is ex.) real, int, keyword/identifier etc...
             whereAreWe_++;
         }   
-    }   
+    }
+    whereAreWe_=0;
     return lexemeToReturn; 
 }
 

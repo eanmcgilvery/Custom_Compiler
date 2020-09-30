@@ -2,16 +2,22 @@
 
 Lexical_Analyzer::Lexical_Analyzer(){} 
 
-std::unordered_map<std::string,std::string> Lexical_Analyzer::lexer(std::string& line)
+std::vector<std::vector<std::string>> Lexical_Analyzer::lexer(std::string& line)
 {
+  std::vector<std::vector<std::string>>  outputTable;
+  
     // Take line and chop into tokens
-    while(line.substr(mainMachine_.WhereAreWe()).size() == 0)
+    while(line.substr(mainMachine_.WhereAreWe()).size() != 0)
     {
-        // NOTE FOR EAN: GO BACK AND CHECK THIS... suspiciion on the substr
-        // Check the arguments for compute Token...
-        mainMachine_.computeToken(line.substr(mainMachine_.WhereAreWe()));
+      //tokenLexeme = [token,lexeme]
+      std::vector<std::string> tokenLexeme;
+      std::string tempLexeme;
+      tempLexeme = mainMachine_.computeToken(line.substr(mainMachine_.WhereAreWe())); // Grab the Lexeme
+      tokenLexeme.push_back(whatTokenType(tempLexeme));  //push back Token to table
+      tokenLexeme.push_back(tempLexeme); //Push back Lexeme into table
+      outputTable.push_back(tokenLexeme); //Push back Token and Lexeme into table
     }
-
+  return  outputTable;
 }
 
 std::string Lexical_Analyzer::isDouble(std::string& lexeme)
