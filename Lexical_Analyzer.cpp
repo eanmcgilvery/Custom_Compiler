@@ -7,16 +7,20 @@ std::vector<std::vector<std::string>> Lexical_Analyzer::lexer(std::string& line)
   std::vector<std::vector<std::string>>  outputTable;
   
     // Take line and chop into tokens
-    while(line.substr(mainMachine_.WhereAreWe()).size() != 0)
+    while(line.substr(mainMachine_.whereAreWe_).size() > 0)
     {
       //tokenLexeme = [token,lexeme]
       std::vector<std::string> tokenLexeme;
       std::string tempLexeme;
-      tempLexeme = mainMachine_.computeToken(line.substr(mainMachine_.WhereAreWe())); // Grab the Lexeme
+      tempLexeme = mainMachine_.computeToken(line.substr(mainMachine_.whereAreWe_)); // Grab the Lexeme
+      std::cout << "Lexeme grabbed: " << tempLexeme << std::endl; 
+      std::cout << "WHAT TOKEN TYPE: " <<whatTokenType(tempLexeme) << "\n";
+      std::cout << "WHAT IS WHEREAMI NOW "<< mainMachine_.whereAreWe_ << "\n";
       tokenLexeme.push_back(whatTokenType(tempLexeme));  //push back Token to table
       tokenLexeme.push_back(tempLexeme); //Push back Lexeme into table
       outputTable.push_back(tokenLexeme); //Push back Token and Lexeme into table
     }
+  mainMachine_.whereAreWe_=0;
   return  outputTable;
 }
 

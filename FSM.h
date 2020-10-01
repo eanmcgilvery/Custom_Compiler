@@ -12,13 +12,11 @@ class Fsm
     std::string computeToken(std::string);
     
     size_t isValidInput(char);
-    const size_t WhereAreWe() {return whereAreWe_;}
-    void WhereAreWe(size_t& input) {whereAreWe_ = input;}
+    size_t whereAreWe_; // Keeps track of our position within the current string
 
   private:
     std::set<size_t> acceptingStates_{3,5,6,10,11,16};
     
-    size_t whereAreWe_; // Keeps track of our position within the current string
     // Pass in substr(whereAreWe)
     size_t columnInput_; // Column to Navigate through
     size_t currentState_; // Row to Navigate through
