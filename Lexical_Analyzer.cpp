@@ -9,13 +9,14 @@ std::vector<std::vector<std::string>> Lexical_Analyzer::lexer(std::string line)
     // Take line and chop into tokens
     while(!line.substr(mainMachine_.whereAreWe_).empty())
     {
-//        std::cout << line << "\n";
+      //  std::cout << line << "\n";
 //        std::cout << line.substr(mainMachine_.whereAreWe_).size() << std::endl;
 //        std::cout << mainMachine_.whereAreWe_ << std::endl;
         //tokenLexeme = [token,lexeme]
       std::vector<std::string> tokenLexeme;
       std::string tempLexeme;
       tempLexeme = mainMachine_.computeToken(line.substr(mainMachine_.whereAreWe_)); // Grab the Lexeme
+      std::cout << "tempLexeme: " << tempLexeme << "\n";
       tokenLexeme.push_back(whatTokenType(tempLexeme));  //push back Token to table
       tokenLexeme.push_back(tempLexeme); //Push back Lexeme into table
       outputTable.push_back(tokenLexeme); //Push back Token and Lexeme into table

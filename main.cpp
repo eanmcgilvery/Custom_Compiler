@@ -10,7 +10,6 @@
 
 int main()
 {
-	
     Lexical_Analyzer lexAnalyzer;
 
     // Sample Files
@@ -30,7 +29,7 @@ int main()
         fout << "Token" << "                "<<  "Lexeme \n";
 		while(std::getline(fin, line))
 		{
-			std::cout << line << "\n";
+			// std::cout << line << "\n";
 			std::vector<std::vector<std::string>> temp = lexAnalyzer.lexer(line);
  			for(size_t index = 0; index < temp.size(); index++)
  			{ //this will push a token from the lexer to the vector

@@ -15,7 +15,7 @@ class Fsm
     size_t whereAreWe_; // Keeps track of our position within the current string
 
   private:
-    std::set<size_t> acceptingStates_{3,5,6,10,11,16};
+    std::set<size_t> acceptingStates_{3,5,6,10,11};
     
     // Pass in substr(whereAreWe)
     size_t columnInput_; // Column to Navigate through
@@ -36,9 +36,9 @@ class Fsm
     /* 10 */ const std::vector<std::string> endComment_ {"1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"};
     /* 11 */ const std::vector<std::string> nonCompoundOperators_ {"1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"};
     /* 12 */ const std::vector<std::string> notOperatorOption {"11","11","11","11","11","10","11","11","11","11","11","11","11","11","11","11","15","11","11"};
-    /* 13 */ const std::vector<std::string> greaterThanOperatorOption {"11","11","11","11","11","10","11","11","11","11","11","11","11","11","11","11","15","11","11"};
-    /* 14 */ const std::vector<std::string> LessThanOperatorOption {"11","11","11","11","11","10","11","11","11","11","11","11","11","11","11","11","15","11","11"};
-    /* 15 */ const std::vector<std::string> equalOperatorOption {"11","11","11","11","11","10","11","11","11","11","11","11","11","11","11","11","16","11","11"};
-    /* 16 */ const std::vector<std::string> doubleEqualOperationOption {"1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"};
+    /* 13 */ const std::vector<std::string> greaterThanOperatorOption {"11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","15","11","11"};
+    /* 14 */ const std::vector<std::string> LessThanOperatorOption {"11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","15","11","11"};
+    /* 15 */ const std::vector<std::string> equalOperatorOption {"11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","16","11","11"};
+    /* 16 */ const std::vector<std::string> doubleEqualOperationOption {"11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","11","11"};
 };
 #endif
