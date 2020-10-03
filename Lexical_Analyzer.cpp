@@ -49,7 +49,7 @@ std::string Lexical_Analyzer::isOperator(std::string& lexeme)
 
 std::string Lexical_Analyzer::whatTokenType(std::string& lexeme)
 {
-    if(isalpha(lexeme[0]))
+    if(isalpha(lexeme[0])|| lexeme[0] == '_')
         return isKeyword(lexeme);
     else if(isdigit(lexeme[0]))
         return isDouble(lexeme);
