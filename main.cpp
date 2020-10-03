@@ -27,7 +27,7 @@ int main()
 		
 		std::ofstream fout("Output.txt");
 		
-        fout << "Token" << "Lexeme \n";
+        fout << "Token" << "                "<<  "Lexeme \n";
 		while(std::getline(fin, line))
 		{
 			std::cout << line << "\n";
@@ -39,7 +39,7 @@ int main()
 		}	
 		fin.close();
  		for(size_t i = 0; i < listOfTokenLexemePairs.size(); i++){
- 			fout << listOfTokenLexemePairs[i][0] << listOfTokenLexemePairs[i][1] << "\n";
+ 			fout << listOfTokenLexemePairs[i][0] << "                " <<  listOfTokenLexemePairs[i][1] << "\n";
  		}
  		//close file that we wrote t0.
 		fout.close();

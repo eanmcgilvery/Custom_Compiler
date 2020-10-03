@@ -44,9 +44,12 @@ std::string Fsm::computeToken(std::string inputString) // "if(a > b)"
             columnInput_ = isValidInput('l'); // Grab the column
         }
         else{
-//            if(inputString[index]==" ")
-//                whereAreWe_++;
-//                break;
+            if(inputString[index]==' '){ //taking care of spaces issue
+                whereAreWe_++;
+                break;
+            }
+            if(inputString[index]=='\0'){break;}
+
             columnInput_ = isValidInput(inputString[index]);
         }
         currentState_ = stoi(mainTable_[currentState_][columnInput_]); // Grab the next state to go to based of the input
@@ -68,14 +71,16 @@ std::string Fsm::computeToken(std::string inputString) // "if(a > b)"
 
 size_t Fsm::isValidInput(char inputChar)
 {
+    std::cout << inputChar<< "\n";
     try
     {
         std::string tempStr;
         tempStr.push_back(inputChar);
-
+        if(inputChar=='\0'){return 1;}
         for (size_t i = 0; i < columns_.size(); i++) {
             if (columns_[i] == tempStr)
                 return i;
+
         }
         throw -1;
     }
