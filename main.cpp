@@ -13,10 +13,7 @@ int main()
 	
     Lexical_Analyzer lexAnalyzer;
 
-    // Sample Files 
-   
-	
-
+    // Sample Files
     std::vector<std::vector<std::string>> listOfTokenLexemePairs;
 
     std::string line;
@@ -30,19 +27,17 @@ int main()
 		
 		std::ofstream fout("Output.txt");
 		
-		fout << "Token" << "Lexeme \n";
+        fout << "Token" << "Lexeme \n";
 		while(std::getline(fin, line))
 		{
-			
+			std::cout << line << "\n";
 			std::vector<std::vector<std::string>> temp = lexAnalyzer.lexer(line);
  			for(size_t index = 0; index < temp.size(); index++)
  			{ //this will push a token from the lexer to the vector
  				listOfTokenLexemePairs.push_back(temp[index]);
- 				std::cout << temp[index][0] << std::endl;
  			}
 		}	
 		fin.close();
-
  		for(size_t i = 0; i < listOfTokenLexemePairs.size(); i++){
  			fout << listOfTokenLexemePairs[i][0] << listOfTokenLexemePairs[i][1] << "\n";
  		}
@@ -54,7 +49,6 @@ int main()
 	{
 		std::cout << "ERROR: Failed to Open File.\n";
 	}
-
 
     return 0;
 }

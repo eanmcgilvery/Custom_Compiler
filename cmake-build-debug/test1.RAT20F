@@ -1,12 +1,10 @@
-/*
-    Test Case 1: Simple arithmetic
-*/  
-
-int myInteger = 10;
+int myInteger1 = 10;
 int myInteger2 = 5;
-boolean greaterThan10; 
 
-int result = myInteger + myInteger2;
+boolean greaterThan10;
+
+int result = 15;
+
 
 if(result > 10)
     greaterThan10 = true;

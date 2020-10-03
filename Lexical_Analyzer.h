@@ -12,7 +12,7 @@ class Lexical_Analyzer
       Lexical_Analyzer();    
 
       // Main function to be called
-      std::vector<std::vector<std::string>> lexer(std::string&);
+      std::vector<std::vector<std::string>> lexer(std::string);
       std::string isKeyword(std::string&);
       std::string isDouble(std::string&);
       std::string whatTokenType(std::string&);
