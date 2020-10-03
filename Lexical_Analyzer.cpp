@@ -16,10 +16,12 @@ std::vector<std::vector<std::string>> Lexical_Analyzer::lexer(std::string line)
       std::vector<std::string> tokenLexeme;
       std::string tempLexeme;
       tempLexeme = mainMachine_.computeToken(line.substr(mainMachine_.whereAreWe_)); // Grab the Lexeme
-      std::cout << "tempLexeme: " << tempLexeme << "\n";
-      tokenLexeme.push_back(whatTokenType(tempLexeme));  //push back Token to table
-      tokenLexeme.push_back(tempLexeme); //Push back Lexeme into table
-      outputTable.push_back(tokenLexeme); //Push back Token and Lexeme into table
+        if(tempLexeme!=" ")
+        {
+          tokenLexeme.push_back(whatTokenType(tempLexeme));  //push back Token to table
+          tokenLexeme.push_back(tempLexeme); //Push back Lexeme into table
+          outputTable.push_back(tokenLexeme); //Push back Token and Lexeme into table
+        }
     }
   mainMachine_.whereAreWe_=0;
   return  outputTable;

@@ -30,7 +30,7 @@ Fsm::Fsm()
 std::string Fsm::computeToken(std::string inputString) // "if(a > b)"
 {
     currentState_ = 1; 
-    std::string lexemeToReturn = "";
+    std::string lexemeToReturn="";
     // Loop until we hit an accepting state
     for(size_t index = 0; acceptingStates_.find(currentState_) == acceptingStates_.end(); index++)
     {   
@@ -45,7 +45,6 @@ std::string Fsm::computeToken(std::string inputString) // "if(a > b)"
         }
         else{
             if(inputString[index]==' '){ //taking care of spaces issue
-                
                 whereAreWe_++;
                 break;
             }
