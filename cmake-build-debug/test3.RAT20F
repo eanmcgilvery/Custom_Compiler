@@ -1,0 +1,9 @@
+/* Test Case 2: < 10 lines of code */
+int b_ = 10;
+
+double f_ = 5.67; /* creating a double */
+double _g = 8.90; /*this comment should be ignored*/
+put(f_+_g);
+
+while( b <= 10)
+  put(b);

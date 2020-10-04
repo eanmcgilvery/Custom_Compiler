@@ -1,0 +1,15 @@
+/* Test Case 2: < 20 lines of code */
+
+int _silicon_valley = 100;
+boolean isSiliconValleyAwesome = true;
+
+/*creating variables
+*/
+int game_shows_= 0;
+boolean isGameShowsAwesome = false;
+
+if(isSiliconValleyAwesome)
+  put(_silicon_valley);
+else
+  put(isGameShowsAwesome);
+fi
