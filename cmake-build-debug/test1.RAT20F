@@ -1,4 +1,10 @@
-int myInteger1 = 10;
+/*
+
+        THIS IS A COOL TEST FILE
+
+*/
+
+int myInteger1 == 10;
 int myInteger2 = 5;
 
 boolean greaterThan10;

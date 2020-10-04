@@ -7,6 +7,8 @@ Fsm::Fsm()
     columnInput_ = 0;
     currentState_ = 1;
 
+    flag = false;
+
     // Load in contents of 2D Vector
     mainTable_.push_back(columns_);
     mainTable_.push_back(starting_);
@@ -29,12 +31,14 @@ Fsm::Fsm()
 
 std::string Fsm::computeToken(std::string inputString) // "if(a > b)"
 {
-    currentState_ = 1; 
+    if(flag)
+        currentState_ = 9;
+    else
+        currentState_ = 1;
     std::string lexemeToReturn="";
     // Loop until we hit an accepting state
     for(size_t index = 0; acceptingStates_.find(currentState_) == acceptingStates_.end(); index++)
-    {   
-        
+    {
         // CASE: 'd'
         if(isdigit(inputString[index])){// Pass in 'd' to machine & push_back the value into lexemeToReturn
             columnInput_ = isValidInput('d'); // Grab the column
@@ -54,21 +58,32 @@ std::string Fsm::computeToken(std::string inputString) // "if(a > b)"
         }
         
         currentState_ = stoi(mainTable_[currentState_][columnInput_]); // Grab the next state to go to based of the input
-        
+        if(currentState_ == 9)
+            flag = true;
+        else
+            flag = false;
+        if(flag)
+        {
+            whereAreWe_++;
+            continue;
+        }
         if(acceptingStates_.find(currentState_)==acceptingStates_.end())
         {
-            
             lexemeToReturn.push_back(inputString[index]); //Push back charinputString[index]   
             // Log what it is ex.) real, int, keyword/identifier etc...
             whereAreWe_++;
         }   
     }
-    if(lexemeToReturn.size() == 0)
+    if(lexemeToReturn.size() == 0 && !flag)
     {
         whereAreWe_++;
         lexemeToReturn.push_back(inputString[0]);
     }
-    
+    if (currentState_ == 10)
+    {
+        lexemeToReturn = " ";
+        whereAreWe_++;
+    }
     return lexemeToReturn;
 }
 

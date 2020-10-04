@@ -18,6 +18,8 @@ std::vector<std::vector<std::string>> Lexical_Analyzer::lexer(std::string line)
       tempLexeme = mainMachine_.computeToken(line.substr(mainMachine_.whereAreWe_)); // Grab the Lexeme
         if(tempLexeme!=" ")
         {
+          if(mainMachine_.flag)
+              continue;
           tokenLexeme.push_back(whatTokenType(tempLexeme));  //push back Token to table
           tokenLexeme.push_back(tempLexeme); //Push back Lexeme into table
           outputTable.push_back(tokenLexeme); //Push back Token and Lexeme into table
