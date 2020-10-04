@@ -10,16 +10,17 @@
 
 int main()
 {
+    // Create an Instance of our Lex Analyzer
     Lexical_Analyzer lexAnalyzer;
 
-    // Sample Files
+    // Our table that will store the Token/Lexeme Pairs
     std::vector<std::vector<std::string>> listOfTokenLexemePairs;
 
+    // Initalize strings for the line of output, and I/O files
     std::string line;
     std::string inputFile;
     std::string outputFile;
-    // Go line by line till end of file, grabbing a token from our lexer()
-    // and storing it into a vector for retreval later.
+
     std::cout << "Please Enter the complete name of your input File: \n";
     std::cin >> inputFile;
 
@@ -27,18 +28,21 @@ int main()
     std::cin >> outputFile;
 	try
 	{
-		
+		// Open Files from user input.
 		std::ifstream fin(inputFile);
 		
 		std::ofstream fout(outputFile);
-		
+
+		// Formatting Purposes of the Output file
         fout << "========================================\n";
         fout << "Token" << "                "<<  "Lexeme \n";
         fout << "========================================\n\n";
 
+        // Go line by line till end of file, grabbing a token from our lexer()
+        // and storing it into a vector for retreval later.
         while(std::getline(fin, line))
 		{
-			// std::cout << line << "\n";
+
 			std::vector<std::vector<std::string>> temp = lexAnalyzer.lexer(line);
  			for(size_t index = 0; index < temp.size(); index++)
  			{ //this will push a token from the lexer to the vector
@@ -46,12 +50,12 @@ int main()
  			}
 		}	
 		fin.close();
+        // Loop through our container and print the LExeme/Token Pairs out to the file
  		for(size_t i = 0; i < listOfTokenLexemePairs.size(); i++){
  			fout << listOfTokenLexemePairs[i][0] << "                " <<  listOfTokenLexemePairs[i][1] << "\n";
  		}
- 		//close file that we wrote t0.
+
 		fout.close();
-				
 	}
 	catch(const std::ifstream::failure& e)
 	{

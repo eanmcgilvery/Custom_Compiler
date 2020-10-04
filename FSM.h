@@ -9,11 +9,16 @@ class Fsm
   public:
     Fsm();
 
+    // Generates a Lexeme based of string
     std::string computeToken(std::string);
 
+    // Determines of the Input is valid within our table
     size_t isValidInput(char);
-    size_t whereAreWe_; // Keeps track of our position within the current string
 
+    // Keeps track of our position within the current string that was grabbed
+    size_t whereAreWe_;
+
+    // Flag to be used for signaling if we're in a comment block
     bool flag;
 private:
     std::set<size_t> acceptingStates_{3,5,6,10,11};
