@@ -1,6 +1,5 @@
 #include "FSM.h"
 #include <exception>
-#include <iostream>
 Fsm::Fsm()
 {
     whereAreWe_ = 0;
@@ -91,7 +90,7 @@ size_t Fsm::isValidInput(char inputChar)
 {
     try
     {
-        
+
         std::string tempStr;
         tempStr.push_back(inputChar);
         

@@ -16,18 +16,27 @@ int main()
     std::vector<std::vector<std::string>> listOfTokenLexemePairs;
 
     std::string line;
+    std::string inputFile;
+    std::string outputFile;
     // Go line by line till end of file, grabbing a token from our lexer()
-    // and storing it into a vector for retreval later. 
-		
+    // and storing it into a vector for retreval later.
+    std::cout << "Please Enter the complete name of your input File: \n";
+    std::cin >> inputFile;
+
+    std::cout << "Please Enter the complete name of your output File: \n";
+    std::cin >> outputFile;
 	try
 	{
 		
-		std::ifstream fin("test1.RAT20F");
+		std::ifstream fin(inputFile);
 		
-		std::ofstream fout("Output.txt");
+		std::ofstream fout(outputFile);
 		
+        fout << "========================================\n";
         fout << "Token" << "                "<<  "Lexeme \n";
-		while(std::getline(fin, line))
+        fout << "========================================\n\n";
+
+        while(std::getline(fin, line))
 		{
 			// std::cout << line << "\n";
 			std::vector<std::vector<std::string>> temp = lexAnalyzer.lexer(line);
