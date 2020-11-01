@@ -1,14 +1,25 @@
 #ifndef SYNTAX_ANALYZER_H
 #define SYNTAX_ANALYZER_H
 
+#include <string>
+#include <vector>
 #include <stack>
 
 class Syntax_Analyzer
 {
     public:
-        Syntax_Analyzer();
-    private:
+        Syntax_Analyzer() = delete;
+        Syntax_Analyzer(const std::vector<std::vector<std::string>>&);
+
+        void Parse();
         std::stack<std::string> printStack;
+
+    private:
+        std::vector<std::vector<std::string>> _tableOfLexemes;
+
+        size_t lexemeCounter;
+
+        void nextLexeme(std::string&);
     /*==========================================================================================
     //
     //                                       Syntax Rules

@@ -3,6 +3,7 @@
 */
 
 #include "Lexical_Analyzer.cpp"
+#include "Syntax_Analyzer.cpp"
 #include <iostream>
 #include <fstream>
 #include <exception>
@@ -12,6 +13,7 @@ int main()
 {
     // Create an Instance of our Lex Analyzer
     Lexical_Analyzer lexAnalyzer;
+	
 
     // Our table that will store the Token/Lexeme Pairs
     std::vector<std::vector<std::string>> listOfTokenLexemePairs;
@@ -40,26 +42,43 @@ int main()
 
         // Go line by line till end of file, grabbing a token from our lexer()
         // and storing it into a vector for retreval later.
+		std::vector<std::vector<std::string>> temp;
         while(std::getline(fin, line))
 		{
-
-			std::vector<std::vector<std::string>> temp = lexAnalyzer.lexer(line);
+			temp = lexAnalyzer.lexer(line);
  			for(size_t index = 0; index < temp.size(); index++)
  			{ //this will push a token from the lexer to the vector
  				listOfTokenLexemePairs.push_back(temp[index]);
  			}
 		}	
 		fin.close();
-        // Loop through our container and print the LExeme/Token Pairs out to the file
- 		for(size_t i = 0; i < listOfTokenLexemePairs.size(); i++){
- 			fout << listOfTokenLexemePairs[i][0] << "                " <<  listOfTokenLexemePairs[i][1] << "\n";
- 		}
+		Syntax_Analyzer syntaxAnalyzer(temp);
+		syntaxAnalyzer.Parse();
 
+		for(size_t index = 1;!syntaxAnalyzer.printStack.empty(); index++)
+		{
+			// Token and Lexeme 
+			if(index % 3 == 0)
+			{
+				
+				fout << std::endl;
+				fout << syntaxAnalyzer.printStack.top();
+				syntaxAnalyzer.printStack.pop(); 
+				fout << std::endl;
+			}
+			else
+			{
+				fout << syntaxAnalyzer.printStack.top() << "                ";
+				syntaxAnalyzer.printStack.pop();
+				
+			}
+		}
+		
 		fout.close();
 	}
 	catch(const std::ifstream::failure& e)
 	{
-		std::cout << "ERROR: Failed to Open File.\n";
+		std::cout << e.what() << " ERROR: Failed to Open File.\n";
 	}
 
     return 0;
