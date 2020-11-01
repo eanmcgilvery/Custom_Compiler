@@ -1,12 +1,14 @@
 #ifndef SYNTAX_ANALYZER_H
 #define SYNTAX_ANALYZER_H
 
+#include <stack>
+
 class Syntax_Analyzer
 {
     public:
         Syntax_Analyzer();
     private:
-
+        std::stack<std::string> printStack;
     /*==========================================================================================
     //
     //                                       Syntax Rules
@@ -37,7 +39,9 @@ class Syntax_Analyzer
         bool Condition(std::string);
         bool Relop(std::string);
         bool Expression(std::string);
+        bool ExpressionPrime(std::string);
         bool Term(std::string);
+        bool TermPrime(std::string);
         bool Factor(std::string);
         bool Primary(std::string);
         bool Empty(std::string);
