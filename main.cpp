@@ -52,7 +52,7 @@ int main()
  			}
 		}	
 		fin.close();
-		Syntax_Analyzer syntaxAnalyzer(temp);
+		Syntax_Analyzer syntaxAnalyzer(listOfTokenLexemePairs);
 		syntaxAnalyzer.Parse();
 
 		for(size_t index = 1;!syntaxAnalyzer.printStack.empty(); index++)
@@ -62,13 +62,13 @@ int main()
 			{
 				
 				fout << std::endl;
-				fout << syntaxAnalyzer.printStack.top();
+				fout << syntaxAnalyzer.printStack.front();
 				syntaxAnalyzer.printStack.pop(); 
 				fout << std::endl;
 			}
 			else
 			{
-				fout << syntaxAnalyzer.printStack.top() << "                ";
+				fout << syntaxAnalyzer.printStack.front() << "                ";
 				syntaxAnalyzer.printStack.pop();
 				
 			}

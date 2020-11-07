@@ -10,20 +10,31 @@
 //
 //========================================================================================*/
 
-    Syntax_Analyzer::Syntax_Analyzer(const std::vector<std::vector<std::string>>& tableOfLexemes) : _tableOfLexemes(tableOfLexemes),
-            lexemeCounter(0) {}
+    Syntax_Analyzer::Syntax_Analyzer(const std::vector<std::vector<std::string>>& tableOfLexemes) : _tableOfLexemes(tableOfLexemes)
+             {lexemeCounter = 0;}
 
     void Syntax_Analyzer::nextLexeme(std::string& token)
     {
-        lexemeCounter++;
-        token = _tableOfLexemes[lexemeCounter][1];
-        std::cout << lexemeCounter << std::endl;
-        
+        if(lexemeCounter + 1  >= _tableOfLexemes.size())
+            return;
+        else
+        {
+            lexemeCounter++;
+            token = _tableOfLexemes[lexemeCounter][1];
+        }
+    }
+    std::string Syntax_Analyzer::tempNextLexeme(std::string token)
+    {
+        int tempLexCount = lexemeCounter + 1;
+        if(tempLexCount  >= _tableOfLexemes.size())
+            return "-1";
+
+        return _tableOfLexemes[tempLexCount][1];
     }
 
     void Syntax_Analyzer::Parse()
     {
-        Rat20F(_tableOfLexemes[lexemeCounter][1]);
+        Rat20F(_tableOfLexemes[0][1]);
     }
 /*==========================================================================================
 //
@@ -55,22 +66,22 @@ bool Syntax_Analyzer::Rat20F(std::string token)
 {
     if(OptFuncDef(token))
     {
-        nextLexeme(token); 
+        nextLexeme(token);
         if (token == "$$")
         {
-            nextLexeme(token); 
+            nextLexeme(token);
             if (OptDeclarationList(token))
             {
                 nextLexeme(token); 
                 if (StatementList(token))
                 { 
-                    nextLexeme(token);    
+                    nextLexeme(token);
                     if(token == "$$")
                     {
-                        
-                        printStack.push("<Rat20F> --> <Opt Function Definitions> $$ <Opt Declaration List> <Statement List> $$");
-                        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                        printStack.push("<Rat20F> --> <Opt Function Definitions> $$ <Opt Declaration List> <Statement List> $$");
                         return true;
                     }
                 }
@@ -86,10 +97,10 @@ bool Syntax_Analyzer::OptFuncDef(std::string token)
 {
     if(FuncDef(token) || Empty(token)) 
     {
-        
-        printStack.push("<Opt Function Definitions> → <Function Definitions> | <Empty>");
-        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        printStack.push("<Opt Function Definitions> → <Function Definitions> | <Empty>");
         return true;
     }
     return 0;
@@ -100,12 +111,12 @@ bool Syntax_Analyzer::FuncDef(std::string token)
 {
     if (Func(token))
     {
-        nextLexeme(token);
-        FuncDef(token);
-        
-        printStack.push("<Function Definitions> → <Function> | <Function> <Function Definitions>");
-        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        std::string temp = tempNextLexeme(token);
+        FuncDef(temp);
+
         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        printStack.push("<Function Definitions> → <Function> | <Function> <Function Definitions>");
         return true; // We return true here because R3 says Func OR (Func and FuncDef)
     }
     return false;
@@ -128,16 +139,16 @@ bool Syntax_Analyzer::Func(std::string token)
                     nextLexeme(token);
                     if (token == ")")
                     {
-                        nextLexeme(token);
+                       nextLexeme(token);
                         if(OptDeclarationList(token))
                         {
-                            nextLexeme(token);
+                            //nextLexeme(token);
                             if(Body(token))
                             {
-                                
-                                printStack.push("<Function> → function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>");
+
                                 printStack.push(_tableOfLexemes[lexemeCounter][1]);
                                 printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                                printStack.push("<Function> → function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>");
                                 return true;
                             }
                         }
@@ -155,10 +166,10 @@ bool Syntax_Analyzer::OptParamList(std::string token)
     
     if(ParamList(token) || Empty(token))
     {
-        
-        printStack.push("<Opt Parameter List> → <Parameter List> | <Empty>");
-        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        printStack.push("<Opt Parameter List> → <Parameter List> | <Empty>");
         return true;
     }
     return 0;
@@ -169,16 +180,16 @@ bool Syntax_Analyzer::ParamList(std::string token)
 {
     if(Parameter(token))
     {
-        nextLexeme(token);
-        if(token == ",")
+        std::string temp = tempNextLexeme(token);
+        if(temp == ",")
         {
             nextLexeme(token);
             ParamList(token);
         }
-       
-        printStack.push("<Parameter List> → <Parameter> | <Parameter> , <Parameter List>");
-        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        printStack.push("<Parameter List> → <Parameter> | <Parameter> , <Parameter List>");
         return true;
     }
     return false;
@@ -191,10 +202,10 @@ bool Syntax_Analyzer::Parameter(std::string token)
     {
         nextLexeme(token);
         if(Qualifiers(token)){
-            
-            printStack.push("<Parameter> → <IDs > <Qualifier>");
-            printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
             printStack.push(_tableOfLexemes[lexemeCounter][0]);
+            printStack.push(_tableOfLexemes[lexemeCounter][1]);
+            printStack.push("<Parameter> → <IDs > <Qualifier>");
             return true;
         }
     }
@@ -207,10 +218,10 @@ bool Syntax_Analyzer::Qualifiers(std::string token)
     
     if(token =="int" || token == "boolean" || token == "real")
     {
-       
-        printStack.push("<Qualifier> → int | boolean | real");
-        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        printStack.push("<Qualifier> → int | boolean | real");
         return true;
     }
     return false;
@@ -226,10 +237,10 @@ bool Syntax_Analyzer::Body(std::string token)
             nextLexeme(token);   
             if(token == "}")
             {
-                
-                printStack.push("<Body> → { < Statement List> }");
-                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                 printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                printStack.push("<Body> → { < Statement List> }");
                 return true;
             }
         }
@@ -243,10 +254,10 @@ bool Syntax_Analyzer::OptDeclarationList(std::string token)
     
     if(DeclarationList(token)  || Empty(token))
     {
-        
-        printStack.push("<Opt Declaration List> → <Declaration List> | <Empty>");
-        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        printStack.push("<Opt Declaration List> → <Declaration List> | <Empty>");
         return true;
     }
     return false;
@@ -259,14 +270,15 @@ bool Syntax_Analyzer::DeclarationList(std::string token)
     {
         nextLexeme(token);
         if(token == ";"){
-            nextLexeme(token);
-            DeclarationList(token);
-            
-            printStack.push("<Declaration List> → <Declaration> ; | <Declaration> ; <Declaration List>");
-            printStack.push(_tableOfLexemes[lexemeCounter][1]);
-            printStack.push(_tableOfLexemes[lexemeCounter][0]);
-            return true; // We return true here because R11 says Func OR (Declaration and DeclarationList)
+            std::string tempToken = tempNextLexeme(token);
+            DeclarationList(tempToken);
+
+
         }
+        printStack.push(_tableOfLexemes[lexemeCounter][0]);
+        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        printStack.push("<Declaration List> → <Declaration> ; | <Declaration> ; <Declaration List>");
+        return true; // We return true here because R11 says Func OR (Declaration and DeclarationList)
     }
     return false;
 }
@@ -279,10 +291,10 @@ bool Syntax_Analyzer::Decleration(std::string token)
         nextLexeme(token);
         if(Ids(token))
         {
-           
-            printStack.push("<Declaration> → <Qualifier > <IDs>");
-            printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
             printStack.push(_tableOfLexemes[lexemeCounter][0]);
+            printStack.push(_tableOfLexemes[lexemeCounter][1]);
+            printStack.push("<Declaration> → <Qualifier > <IDs>");
             return true;
         }
     }
@@ -293,16 +305,16 @@ bool Syntax_Analyzer::Decleration(std::string token)
 bool Syntax_Analyzer::Ids(std::string token)
 {
     if(_tableOfLexemes[lexemeCounter][0] == "identifier"){
-        nextLexeme(token);
-        if(token == ",")
+        std::string tempToken = tempNextLexeme(token);
+        if(tempToken == ",")
         {
             nextLexeme(token);
             Ids(token);
         }
-        
-        printStack.push("<IDs> → <Identifier> | <Identifier>, <IDs>");
-        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        printStack.push("<IDs> → <Identifier> | <Identifier>, <IDs>");
         return true;
     }
     return false;
@@ -314,11 +326,13 @@ bool Syntax_Analyzer::StatementList(std::string token)
     if (Statement(token))
     {
         nextLexeme(token);
-        StatementList(token);
-       
-        printStack.push("<Statement List> → <Statement> | <Statement> <Statement List>");
-        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        if(!StatementList(token)){
+            lexemeCounter--;
+        }
+
         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        printStack.push("<Statement List> → <Statement> | <Statement> <Statement List>");
         return true; // We return true here because R3 says Func OR (Func and FuncDef)
     }
     return false;
@@ -329,10 +343,10 @@ bool Syntax_Analyzer::Statement(std::string token)
 {
     if(Compound(token) || Assign(token) || If(token) || Return(token) || Print(token) ||Scan(token) ||While(token))
     {
-        
-        printStack.push("<Statement> → <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>");
-        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        printStack.push("<Statement> → <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>");
         return true;
     }
     return false;
@@ -348,10 +362,10 @@ bool Syntax_Analyzer::Compound(std::string token)
             nextLexeme(token);
             if(token == "}")
             {
-               
-                printStack.push("<Compound> → { <Statement List> }");
-                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                 printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                printStack.push("<Compound> → { <Statement List> }");
                 return true;
             }
         }
@@ -369,10 +383,10 @@ bool Syntax_Analyzer::Assign(std::string token)
             nextLexeme(token);
             if(Expression(token))
             {
-                
-                printStack.push("<Assign> → <Identifier> = <Expression> ;");
-                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                 printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                printStack.push("<Assign> → <Identifier> = <Expression> ;");
                 return true;
             }
         }
@@ -397,10 +411,10 @@ bool Syntax_Analyzer::If(std::string token)
                     nextLexeme(token);
                     if(token == "fi")
                     {
-                        
-                        printStack.push("<If> → if ( <Condition> ) <Statement> fi | if ( <Condition> ) <Statement> else <Statement> fi");
-                        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                        printStack.push("<If> → if ( <Condition> ) <Statement> fi | if ( <Condition> ) <Statement> else <Statement> fi");
                         return true;
                     }
                     if(Statement(token))
@@ -414,10 +428,10 @@ bool Syntax_Analyzer::If(std::string token)
                                 nextLexeme(token);
                                 if(token=="fi")
                                 {
-                                    
-                                    printStack.push("<If> → if ( <Condition> ) <Statement> fi | if ( <Condition> ) <Statement> else <Statement> fi");
-                                    printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                                     printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                                    printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                                    printStack.push("<If> → if ( <Condition> ) <Statement> fi | if ( <Condition> ) <Statement> else <Statement> fi");
                                     return true;
                                 }
                                     
@@ -440,10 +454,10 @@ bool Syntax_Analyzer::Return(std::string token)
         nextLexeme(token);
         if(token==";")
         {
-            
-            printStack.push("<Return> → return ; | return <Expression> ;");
-            printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
             printStack.push(_tableOfLexemes[lexemeCounter][0]);
+            printStack.push(_tableOfLexemes[lexemeCounter][1]);
+            printStack.push("<Return> → return ; | return <Expression> ;");
             return true;
         }
         if(Expression(token))
@@ -451,10 +465,10 @@ bool Syntax_Analyzer::Return(std::string token)
             nextLexeme(token);
             if(token == ";")
             {
-                
-                printStack.push("<Return> → return ; | return <Expression> ;");
-                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                 printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                printStack.push("<Return> → return ; | return <Expression> ;");
                 return true;
             }
             if(Expression(token))
@@ -462,10 +476,10 @@ bool Syntax_Analyzer::Return(std::string token)
                 nextLexeme(token);
                 if(token==";")
                 {
-                    
-                    printStack.push("<Return> → return ; | return <Expression> ;");
-                    printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                     printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                    printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                    printStack.push("<Return> → return ; | return <Expression> ;");
                     return true;
                 }
             }
@@ -491,10 +505,10 @@ bool Syntax_Analyzer::Print(std::string token)
                     nextLexeme(token);
                     if(token == ";")
                     {
-                        
-                        printStack.push("<Print> → put ( <Expression>);");
-                        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                        printStack.push("<Print> → put ( <Expression>);");
                         return true;
                     }
                 }
@@ -521,10 +535,10 @@ bool Syntax_Analyzer::Scan(std::string token)
                     nextLexeme(token);
                     if(token == ";")
                     {
-                        
-                        printStack.push("<Scan> → get ( <IDs> );");
-                        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                        printStack.push("<Scan> → get ( <IDs> );");
                         return true;
                     }
                 }
@@ -551,10 +565,10 @@ bool Syntax_Analyzer::While(std::string token)
                     nextLexeme(token);
                     if(Statement(token))
                     {
-                       
-                        printStack.push("<While> → while ( <Condition> ) <Statement>");
-                        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                        printStack.push("<While> → while ( <Condition> ) <Statement>");
                         return true;
                     }
                 }
@@ -575,10 +589,10 @@ bool Syntax_Analyzer::Condition(std::string token)
             nextLexeme(token);
             if(Expression(token))
             {
-                
-                printStack.push("<Condition> → <Expression> <Relop> <Expression>");
-                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                 printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                printStack.push("<Condition> → <Expression> <Relop> <Expression>");
                 return 1;
             }
         }
@@ -591,10 +605,10 @@ bool Syntax_Analyzer::Relop(std::string token)
 {
     if(token == "==" || token == "!=" ||token == ">" ||token == "<" ||token == "<=" ||token == "=>")
     {
-        
-        printStack.push("<Relop> →  == | !=  | >  | < | <= |  =>");
-        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        printStack.push("<Relop> →  == | !=  | >  | < | <= |  =>");
         return 1;
     }
     return false;
@@ -608,10 +622,10 @@ bool Syntax_Analyzer::Expression(std::string token)
         nextLexeme(token);
         if(ExpressionPrime(token))
         {
-            
-            printStack.push("<Expression> → <Term><ExpressionPrime>");
-            printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
             printStack.push(_tableOfLexemes[lexemeCounter][0]);
+            printStack.push(_tableOfLexemes[lexemeCounter][1]);
+            printStack.push("<Expression> → <Term><ExpressionPrime>");
             return 1;
         }
     }
@@ -629,10 +643,10 @@ bool Syntax_Analyzer::ExpressionPrime(std::string token)
             nextLexeme(token);
             if (ExpressionPrime(token))
             {
-                
-                printStack.push("<ExpressionPrime> → + <Term><ExpressionPrime> |  - <Term><ExpressionPrime> |<epsilon>");
-                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                 printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                printStack.push("<ExpressionPrime> → + <Term><ExpressionPrime> |  - <Term><ExpressionPrime> |<epsilon>");
                 return 1;
             }
         }
@@ -645,10 +659,10 @@ bool Syntax_Analyzer::ExpressionPrime(std::string token)
             nextLexeme(token);
             if (ExpressionPrime(token))
             {
-                
-                printStack.push("<ExpressionPrime> → + <Term><ExpressionPrime> |  - <Term><ExpressionPrime> |<epsilon>");
-                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                 printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                printStack.push("<ExpressionPrime> → + <Term><ExpressionPrime> |  - <Term><ExpressionPrime> |<epsilon>");
                 return 1;
             }        
         }
@@ -664,10 +678,10 @@ bool Syntax_Analyzer::Term(std::string token)
         nextLexeme(token);
         if(TermPrime(token))
         {
-            
-            printStack.push("<Term> → <Factor><TermPrime>");
-            printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
             printStack.push(_tableOfLexemes[lexemeCounter][0]);
+            printStack.push(_tableOfLexemes[lexemeCounter][1]);
+            printStack.push("<Term> → <Factor><TermPrime>");
             return 1;
         }
     }
@@ -685,10 +699,10 @@ bool Syntax_Analyzer::TermPrime(std::string token)
             nextLexeme(token);
             if(TermPrime(token))
             {
-                
-                printStack.push("<TermPrime> → <Empty> | *<Factor><TermPrime> | / <Factor><TermPrime>");
-                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                 printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                printStack.push("<TermPrime> → <Empty> | *<Factor><TermPrime> | / <Factor><TermPrime>");
                 return 1;
             }
         }
@@ -701,10 +715,10 @@ bool Syntax_Analyzer::TermPrime(std::string token)
             nextLexeme(token);
             if(TermPrime(token))
             {
-                
-                printStack.push("<TermPrime> → <Empty> | *<Factor><TermPrime> | / <Factor><TermPrime>");
-                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                 printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                printStack.push("<TermPrime> → <Empty> | *<Factor><TermPrime> | / <Factor><TermPrime>");
                 return 1;
             }
         }
@@ -720,20 +734,20 @@ bool Syntax_Analyzer::Factor(std::string token)
         nextLexeme(token);
         if(Primary(token))
         {
-           
-            printStack.push("<Factor> → - <Primary> | <Primary>");
-            printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
             printStack.push(_tableOfLexemes[lexemeCounter][0]);
+            printStack.push(_tableOfLexemes[lexemeCounter][1]);
+            printStack.push("<Factor> → - <Primary> | <Primary>");
             return 1;
         }
     }
     else 
         if(Primary(token))
         {
-            
-            printStack.push("<Factor> → - <Primary> | <Primary>");
-            printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
             printStack.push(_tableOfLexemes[lexemeCounter][0]);
+            printStack.push(_tableOfLexemes[lexemeCounter][1]);
+            printStack.push("<Factor> → - <Primary> | <Primary>");
             return 1;
         }
     return false;
@@ -744,18 +758,18 @@ bool Syntax_Analyzer::Primary(std::string token)
 {
     if(_tableOfLexemes[lexemeCounter][0] == "identifier")
     {
-        
-        printStack.push("<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false");
-        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        printStack.push("<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false");
         return true;
     }
-    else if(_tableOfLexemes[lexemeCounter][0] == "integer")
+    else if(_tableOfLexemes[lexemeCounter][0] == "int")
     {
-        
-        printStack.push("<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false");
-        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        printStack.push("<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false");
         return true;
     }
     else if(_tableOfLexemes[lexemeCounter][0] == "identifier")
@@ -768,10 +782,10 @@ bool Syntax_Analyzer::Primary(std::string token)
                 nextLexeme(token);
                 if( token == ")")
                 {
-                    
-                    printStack.push("<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false");
-                    printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                     printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                    printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                    printStack.push("<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false");
                     return 1;
                 }
             }
@@ -785,36 +799,36 @@ bool Syntax_Analyzer::Primary(std::string token)
             nextLexeme(token);
             if( token == ")")
             {
-                
-                printStack.push("<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false");
-                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
                 printStack.push(_tableOfLexemes[lexemeCounter][0]);
+                printStack.push(_tableOfLexemes[lexemeCounter][1]);
+                printStack.push("<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false");
                 return 1;
             }
         }
     }
     else if(_tableOfLexemes[lexemeCounter][0] == "identifier")
     {
-        
-        printStack.push("<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false");
-        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        printStack.push("<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false");
         return true;
     }
     else if (token == "true")
     {
-        
-        printStack.push("<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false");
-        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        printStack.push("<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false");
         return true;
     }
     else if (token == "false")
     {
-        
-        printStack.push("<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false");    
-        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
         printStack.push(_tableOfLexemes[lexemeCounter][0]);
+        printStack.push(_tableOfLexemes[lexemeCounter][1]);
+        printStack.push("<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false");
         return true;
     }
     return false;
@@ -823,9 +837,9 @@ bool Syntax_Analyzer::Primary(std::string token)
 //R32
 bool Syntax_Analyzer::Empty(std::string token)
 {
-    
-    printStack.push("<Empty> → _____");
-    printStack.push(_tableOfLexemes[lexemeCounter][1]);
+
     printStack.push(_tableOfLexemes[lexemeCounter][0]);
+    printStack.push(_tableOfLexemes[lexemeCounter][1]);
+    printStack.push("<Empty> → _____");
     return true;
 }

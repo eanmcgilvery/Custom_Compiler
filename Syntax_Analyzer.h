@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include <stack>
+#include <queue>
 
 class Syntax_Analyzer
 {
@@ -12,7 +12,7 @@ class Syntax_Analyzer
         Syntax_Analyzer(const std::vector<std::vector<std::string>>&);
 
         void Parse();
-        std::stack<std::string> printStack;
+        std::queue<std::string> printStack;
 
     private:
         std::vector<std::vector<std::string>> _tableOfLexemes;
@@ -20,6 +20,7 @@ class Syntax_Analyzer
         size_t lexemeCounter;
 
         void nextLexeme(std::string&);
+        std::string tempNextLexeme(std::string);
     /*==========================================================================================
     //
     //                                       Syntax Rules

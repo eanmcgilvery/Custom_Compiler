@@ -44,7 +44,7 @@ std::string Lexical_Analyzer::isDouble(std::string& lexeme)
 {
  if(lexeme.find('.')!= std::string::npos)
     return "real";
-  return "integer"; 
+  return "int";
 }
 
 /*
