@@ -18,6 +18,9 @@ class Syntax_Analyzer
         std::vector<std::vector<std::string>> _tableOfLexemes;
 
         size_t lexemeCounter;
+        bool flagEmpty;
+        bool deepestFlag;
+        std::string tokenFromBelow;
 
         void nextLexeme(std::string&);
         std::string tempNextLexeme(std::string);
@@ -28,23 +31,30 @@ class Syntax_Analyzer
     //========================================================================================*/       
         bool Rat20F(std::string);
         bool OptFuncDef(std::string);
-        bool FuncDef(std::string);
+        bool FuncDefV1(std::string);
+        bool FuncDefV2(std::string);
         bool Func(std::string);
         bool OptParamList(std::string);
-        bool ParamList(std::string);
+        bool ParamListV1(std::string);
+        bool ParamListV2(std::string);
         bool Parameter(std::string);
         bool Qualifiers(std::string);
         bool Body(std::string);
         bool OptDeclarationList(std::string);
-        bool DeclarationList(std::string);
+        bool DeclarationListV1(std::string);
+        bool DeclarationListV2(std::string);
         bool Decleration(std::string);
-        bool Ids(std::string);
-        bool StatementList(std::string);
+        bool IdsV1(std::string);
+        bool IdsV2(std::string);
+        bool StatementListV1(std::string);
+        bool StatementListV2(std::string);
         bool Statement(std::string);
         bool Compound(std::string);
         bool Assign(std::string);
-        bool If(std::string);
-        bool Return(std::string);
+        bool IfV1(std::string);
+        bool IfV2(std::string);
+        bool ReturnV1(std::string);
+        bool ReturnV2(std::string);
         bool Print(std::string);
         bool Scan(std::string);
         bool While(std::string);
