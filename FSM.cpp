@@ -57,11 +57,15 @@ std::string Fsm::computeToken(std::string inputString) // "if(a > b)"
             columnInput_ = isValidInput('l'); // Grab the column
         }
         // CASE: Operator/Symbol
-        else{
+        else
+        {
             // CASE: Hits a space, we want to ignore it
             if(inputString[index]==' ')
             {
-                whereAreWe_++;
+                if(flag)
+                {
+                    whereAreWe_++;
+                }
                 break;
             }
 
