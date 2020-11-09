@@ -52,7 +52,7 @@ int main()
             }
         }
         fin.close();
-        Syntax_Analyzer syntaxAnalyzer(listOfTokenLexemePairs);
+        Syntax_Analyzer syntaxAnalyzer(listOfTokenLexemePairs, outputFile);
         syntaxAnalyzer.Parse();
 
         for(size_t index = 1;!syntaxAnalyzer.printStack.empty(); index++)

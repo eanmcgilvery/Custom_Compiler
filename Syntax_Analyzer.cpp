@@ -10,8 +10,8 @@
 //
 //========================================================================================*/
 
-Syntax_Analyzer::Syntax_Analyzer(const std::vector<std::vector<std::string>>& tableOfLexemes) :
-        _tableOfLexemes(tableOfLexemes)  {lexemeCounter = -1;}
+Syntax_Analyzer::Syntax_Analyzer(const std::vector<std::vector<std::string>>& tableOfLexemes, const std::string& fileName) :
+        _tableOfLexemes(tableOfLexemes), fileName_(fileName), error_(fileName_) {lexemeCounter = -1;}
 
 void Syntax_Analyzer::nextLexeme(std::string& token)
 {

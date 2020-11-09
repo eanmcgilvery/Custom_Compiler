@@ -10,7 +10,7 @@ class Syntax_Analyzer
 {
 public:
     Syntax_Analyzer() = delete;
-    Syntax_Analyzer(const std::vector<std::vector<std::string>>&);
+    Syntax_Analyzer(const std::vector<std::vector<std::string>>&, const std::string &);
 
     void Parse();
     std::queue<std::string> printStack;
@@ -19,6 +19,7 @@ private:
     std::vector<std::vector<std::string>> _tableOfLexemes;
 
     size_t lexemeCounter;
+    std::string fileName_;
 
     SyntaxException error_;
     void nextLexeme(std::string&);
