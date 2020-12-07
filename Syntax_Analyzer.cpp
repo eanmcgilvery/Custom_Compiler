@@ -1,7 +1,6 @@
 #include "Syntax_Analyzer.h"
 #include "Lexical_Analyzer.h"
 #include <string>
-#include <iostream>
 #include <stdexcept>
 
 /*==========================================================================================
@@ -66,7 +65,6 @@ bool Syntax_Analyzer::Rat20F(std::string& token)
        nextLexeme(token);
        OptDeclarationList(token);
        if (!StatementList(token)) {
-
            return false;
        }
     }
@@ -78,6 +76,7 @@ bool Syntax_Analyzer::Rat20F(std::string& token)
     //else throw an error
     if (token == "$$")
     {
+        printInstr();
         return true;
     }
     else
@@ -195,7 +194,7 @@ bool Syntax_Analyzer::ParamList(std::string& token)
 bool Syntax_Analyzer::Parameter(std::string& token)
 {
     printStack.push("<Parameter> → <IDs > <Qualifier>");
-    if (Ids(token))
+    if (Ids(token, false, false))
     {
         if(Qualifiers(token))
         {
@@ -289,7 +288,7 @@ bool Syntax_Analyzer::Decleration(std::string& token)
     printStack.push("<Declaration> → <Qualifier > <IDs>");
     if (Qualifiers(token))
     {
-        if(Ids(token))
+        if(Ids(token,true, false))
         {
             return true;
         }
@@ -298,16 +297,32 @@ bool Syntax_Analyzer::Decleration(std::string& token)
 }
 
 //R13
-bool Syntax_Analyzer::Ids(std::string& token)
+bool Syntax_Analyzer::Ids(std::string& token, bool from_dec, bool from_scan)
 {
+    printStack.push("<IDs> → <Identifier> | <Identifier>, <IDs>");
     printStack.push("<IDs> → <Identifier> | <Identifier>, <IDs>");
     if(_tableOfLexemes[lexemeCounter][0] == "identifier")
     {
+        if(from_scan)
+        {
+            if (is_duplicate(token)) {
+                gen_instr("STDIN", -1111);
+                gen_instr("POPM", get_addr(token));
+            }
+        }
+        if(from_dec)
+        {
+                symbolTable[symbCount] = token;
+                symbolType[symbCount] =  findNearestKeyword(token);
+                symbCount++;
+        }
+
+
         nextLexeme(token);
         if(token == ",")
         {
             nextLexeme(token);
-            if(Ids(token))
+            if(Ids(token,from_dec, from_scan))
             {
                 return true;
             }
@@ -386,14 +401,22 @@ bool Syntax_Analyzer::Assign(std::string& token)
     printStack.push("<Assign> → <Identifier> = <Expression> ;");
     if(_tableOfLexemes[lexemeCounter][0] == "identifier")
     {
+        std::string saveMe = _tableOfLexemes[lexemeCounter][1];
+
+        // Check to see if the data type was a boolean
+        bool b_assign = false;
+        if(_tableOfLexemes[lexemeCounter][1] == "boolean")
+            b_assign = true;
+
         nextLexeme(token);
         if(token=="=")
         {
             nextLexeme(token);
-            if(Expression(token))
+            if(Expression(token, b_assign))
             {
                 if(token == ";")
                 {
+                    gen_instr("POPM", get_addr(saveMe));
                     nextLexeme(token);
                     return true;
                 }
@@ -419,6 +442,7 @@ bool Syntax_Analyzer::If(std::string& token)
     printStack.push("<If> → if ( <Condition> ) <Statement> fi | if ( <Condition> ) <Statement> else <Statement> fi");
     if(token == "if")
     {
+        addr = instrAddress;
         nextLexeme(token);
         if(token == "(")
         {
@@ -430,6 +454,7 @@ bool Syntax_Analyzer::If(std::string& token)
                     nextLexeme(token);
                     if(Statement(token))
                     {
+                        back_patch(instrAddress);
                         if(token == "fi")
                         {
                             nextLexeme(token);
@@ -498,7 +523,7 @@ bool Syntax_Analyzer::Return(std::string& token)
     if(token == "return")
     {
         nextLexeme(token);
-        if(Expression(token)){
+        if(Expression(token,false)){
             if(token==";")
             {
                 nextLexeme(token);
@@ -535,14 +560,16 @@ bool Syntax_Analyzer::Print(std::string& token)
         if(token == "(")
         {
             nextLexeme(token);
-            if(Expression(token))
+            if(Expression(token, false))
             {
+
                 if(token == ")")
                 {
                     nextLexeme(token);
                     if(token == ";")
                     {
-                       nextLexeme(token);
+                        gen_instr("STDOUT", -1111);
+                        nextLexeme(token);
                         return true;
                     }
                     else
@@ -582,7 +609,7 @@ bool Syntax_Analyzer::Scan(std::string& token)
         if(token == "(")
         {
             nextLexeme(token);
-            if (Ids(token)) {
+            if (Ids(token, false, true)) {
                 if (token == ")") {
                     nextLexeme(token);
                     if (token == ";") {
@@ -623,6 +650,8 @@ bool Syntax_Analyzer::While(std::string& token)
 
     if (token == "while")
     {
+        addr = instrAddress;
+        gen_instr("LABEL", -1111);
         nextLexeme(token);
         if (token == "(")
         {
@@ -634,7 +663,9 @@ bool Syntax_Analyzer::While(std::string& token)
                     nextLexeme(token);
                     if(Statement(token))
                     {
-                       return true;
+                        gen_instr("JUMP", addr);
+                        back_patch(instrAddress);
+                        return true;
                     }
                     else
                     {
@@ -668,12 +699,39 @@ bool Syntax_Analyzer::Condition(std::string& token)
 {
     printStack.push("<Condition> → <Expression> <Relop> <Expression>");
 
-    if(Expression(token))
+    if(Expression(token, false))
     {
+        std::string op = token;
         if(Relop(token))
         {
-            if(Expression(token))
+            if(Expression(token, false))
             {
+                if(op == "<")
+                {
+                    gen_instr("LES",-1111);
+                }
+                if(op == ">")
+                {
+                    gen_instr("GRT",-1111);
+                }
+                if(op == "==")
+                {
+                    gen_instr("EQU",-1111);
+                }
+                if(op == "!=")
+                {
+                    gen_instr("NEQ",-1111);
+                }
+                if(op == "=>")
+                {
+                    gen_instr("GEQ",-1111);
+                }
+                if(op == "<=")
+                {
+                    gen_instr("LEQ",-1111);
+                }
+                jumpstack.push(instrAddress);
+                gen_instr("JUMPZ", -1111);
                 return true;
             }
             else
@@ -705,11 +763,11 @@ bool Syntax_Analyzer::Relop(std::string& token)
 }
 
 //R25
-bool Syntax_Analyzer::Expression(std::string& token)
+bool Syntax_Analyzer::Expression(std::string& token, bool b_assign=false)
 {
     printStack.push("<Expression> → <Term><ExpressionPrime>");
 
-    if(Term(token))
+    if(Term(token, b_assign))
     {
         if(ExpressionPrime(token))
         {
@@ -730,9 +788,15 @@ bool Syntax_Analyzer::ExpressionPrime(std::string& token)
 
     if(token == "+" || token == "-")
     {
+        std::string op = token;
         nextLexeme(token);
-        if(Term(token))
+        if(Term(token,false))
         {
+            if (op == "+")
+                gen_instr("ADD", -1111);
+            if (op == "-")
+                gen_instr("SUB", -1111);
+
             if(ExpressionPrime(token))
             {
                 return true;
@@ -748,11 +812,11 @@ bool Syntax_Analyzer::ExpressionPrime(std::string& token)
 }
 
 //R28
-bool Syntax_Analyzer::Term(std::string& token)
+bool Syntax_Analyzer::Term(std::string& token, bool b_assign = false)
 {
     printStack.push("<Term> → <Factor><TermPrime>");
 
-    if(Factor(token))
+    if(Factor(token, b_assign))
     {
         if(TermPrime(token))
         {
@@ -770,16 +834,20 @@ bool Syntax_Analyzer::Term(std::string& token)
 bool Syntax_Analyzer::TermPrime(std::string& token)
 {
     printStack.push("<TermPrime> → <Empty> | *<Factor><TermPrime> | / <Factor><TermPrime>");
-
     if(token == "*" || token == "/")
     {
+        std::string op = token;
         nextLexeme(token);
-        if(Factor(token))
+        if(Factor(token, false))
         {
+            if (op == "*")
+                gen_instr("MUL", -1111);
+
+            if (op == "/")
+                gen_instr("DIV", -1111);
+
             if(TermPrime(token))
-            {
                return true;
-            }
         }
         else
         {
@@ -791,14 +859,14 @@ bool Syntax_Analyzer::TermPrime(std::string& token)
 }
 
 //R30
-bool Syntax_Analyzer::Factor(std::string& token)
+bool Syntax_Analyzer::Factor(std::string& token, bool b_assign = false)
 {
     printStack.push("<Factor> → - <Primary> | <Primary>");
 
     if(token == "-")
     {
         nextLexeme(token);
-        if(Primary(token))
+        if(Primary(token, b_assign))
         {
             return true;
         }
@@ -810,7 +878,7 @@ bool Syntax_Analyzer::Factor(std::string& token)
     }
     else
     {
-        if(Primary(token))
+        if(Primary(token, b_assign))
         {
             return true;
         }
@@ -822,22 +890,28 @@ bool Syntax_Analyzer::Factor(std::string& token)
 }
 
 //R31
-bool Syntax_Analyzer::Primary(std::string& token)
+bool Syntax_Analyzer::Primary(std::string& token, bool b_assign = false)
 {
     printStack.push("<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false");
 
     if(_tableOfLexemes[lexemeCounter][0] == "int" || _tableOfLexemes[lexemeCounter][0] == "real"|| token == "true" || token == "false")
     {
+        if(_tableOfLexemes[lexemeCounter][0] == "int")
+        {
+            gen_instr("PUSHI", stoi(_tableOfLexemes[lexemeCounter][1]));
+        }
+
         nextLexeme(token);
         return true;
     }
     else if(_tableOfLexemes[lexemeCounter][0] == "identifier")
     {
+        gen_instr("PUSHM", get_addr(_tableOfLexemes[lexemeCounter][1]));
         nextLexeme(token);
         if(token == "(")
         {
             nextLexeme(token);
-            if(Ids(token))
+            if(Ids(token,false, false))
             {
                 if( token == ")")
                 {
@@ -873,7 +947,7 @@ bool Syntax_Analyzer::Primary(std::string& token)
             }
             else
             {
-                error_.Throw("a ) ", _tableOfLexemes[lexemeCounter][0] ,token);
+                error_.Throw(" ) ", _tableOfLexemes[lexemeCounter][0] ,token);
                 return false;
             }
         }
@@ -893,4 +967,88 @@ bool Syntax_Analyzer::Empty(std::string& token)
 {
     printStack.push("<Empty> → _____");
     return true;
+}
+
+void Syntax_Analyzer::gen_instr(std::string op, int oper)
+{
+    instrTable[instrAddress].address = instrAddress;
+    instrTable[instrAddress].operand = oper;
+    instrTable[instrAddress].op = op;
+
+    instrAddress++;
+}
+
+void Syntax_Analyzer::back_patch(int jump_addr)
+{
+    if (!jumpstack.empty())
+    {
+        addr = jumpstack.top();
+        jumpstack.pop();
+        instrTable[addr].operand = jump_addr;
+    }
+    else
+    {
+        std::cout << "ERROR: JUMP STACK IS EMPTY";
+    }
+}
+
+int Syntax_Analyzer::get_addr(std::string symb)
+{
+    int addr = 0;
+
+    for(int i = 0; i < symbCount + 1; i++)
+    {
+        if(symbolTable[i] == symb)
+        {
+            addr = i + memAddr;
+        }
+    }
+    return addr;
+}
+
+bool Syntax_Analyzer::is_duplicate(std::string input)
+{
+    for (int i =0; i < _tableOfLexemes.size(); i++)
+    {
+        if (_tableOfLexemes[i][1] == input)
+            return true;
+    }
+    return false;
+}
+
+std::string Syntax_Analyzer::findNearestKeyword(std::string token)
+{
+    int nearestKeyword=0;
+        for(int j = 0; j!= lexemeCounter ;j++)
+        {
+            if(_tableOfLexemes[j][0] == "keyword")
+            {
+                nearestKeyword = j;
+            }
+        }
+
+    return _tableOfLexemes[nearestKeyword][1];
+}
+
+void Syntax_Analyzer::printInstr() {
+
+    std::ofstream fout("fileName.txt");
+
+    for(int i = 1; i < instrAddress;i++){
+        fout << i << ". " << instrTable[i].op << " ";
+        if(instrTable[i].operand != -1111) {
+            fout << instrTable[i].operand << std::endl;
+        }
+        else {
+            fout << std::endl;
+        }
+    }
+
+    fout << "\nIDENTIFIER" << "               " << "MEMORY LOCATION" << "               " << "TYPE\n";
+
+    for (int i =0; i < symbCount; i++)
+    {
+        fout << symbolTable[i] << "                      " << get_addr(symbolTable[i]) <<  "                      " << symbolType[i] << std::endl;
+    }
+    fout.close();
 }

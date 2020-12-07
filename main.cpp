@@ -33,12 +33,12 @@ int main()
         // Open Files from user input.
         std::ifstream fin(inputFile);
 
-        std::ofstream fout(outputFile);
-
-        // Formatting Purposes of the Output file
-        fout << "========================================\n";
-        fout << "Token" << "                "<<  "Lexeme \n";
-        fout << "========================================\n\n";
+//        std::ofstream fout(outputFile);
+//
+//        // Formatting Purposes of the Output file
+//        fout << "========================================\n";
+//        fout << "Token" << "                "<<  "Lexeme \n";
+//        fout << "========================================\n\n";
 
         // Go line by line till end of file, grabbing a token from our lexer()
         // and storing it into a vector for retreval later.
@@ -55,29 +55,29 @@ int main()
         Syntax_Analyzer syntaxAnalyzer(listOfTokenLexemePairs, outputFile);
         syntaxAnalyzer.Parse();
 
-        for(size_t index = 1;!syntaxAnalyzer.printStack.empty(); index++)
-        {
+//        for(size_t index = 1;!syntaxAnalyzer.printStack.empty(); index++)
+//        {
+//
+//            if(syntaxAnalyzer.printStack.front() == " ")
+//            {
+//                syntaxAnalyzer.printStack.pop();
+//                fout << std::endl;
+//                fout << syntaxAnalyzer.printStack.front() << "                ";
+//                syntaxAnalyzer.printStack.pop();
+//                fout << syntaxAnalyzer.printStack.front();
+//                syntaxAnalyzer.printStack.pop();
+//                fout << std::endl;
+//                fout << std::endl;
+//            }
+//            else
+//            {
+//                fout << syntaxAnalyzer.printStack.front();
+//                syntaxAnalyzer.printStack.pop();
+//                fout << std::endl;
+//            }
+//        }
 
-            if(syntaxAnalyzer.printStack.front() == " ")
-            {
-                syntaxAnalyzer.printStack.pop();
-                fout << std::endl;
-                fout << syntaxAnalyzer.printStack.front() << "                ";
-                syntaxAnalyzer.printStack.pop();
-                fout << syntaxAnalyzer.printStack.front();
-                syntaxAnalyzer.printStack.pop();
-                fout << std::endl;
-                fout << std::endl;
-            }
-            else
-            {
-                fout << syntaxAnalyzer.printStack.front();
-                syntaxAnalyzer.printStack.pop();
-                fout << std::endl;
-            }
-        }
-
-        fout.close();
+//        fout.close();
     }
     catch(const std::ifstream::failure& e)
     {
