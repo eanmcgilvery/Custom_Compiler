@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="RAT20F_Compiler"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="RAT20F_Compiler">
+				<Option output="/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/RAT20F_Compiler" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/."/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 RAT20F_Compiler"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="RAT20F_Compiler/fast">
+				<Option output="/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/RAT20F_Compiler" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/."/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 RAT20F_Compiler/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/FSM.h">
+			<Option target="RAT20F_Compiler"/>
+		</Unit>
+		<Unit filename="/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/Lexical_Analyzer.h">
+			<Option target="RAT20F_Compiler"/>
+		</Unit>
+		<Unit filename="/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/ObjCodeTable.cpp">
+			<Option target="RAT20F_Compiler"/>
+		</Unit>
+		<Unit filename="/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/Syntax_Analyzer.h">
+			<Option target="RAT20F_Compiler"/>
+		</Unit>
+		<Unit filename="/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/main.cpp">
+			<Option target="RAT20F_Compiler"/>
+		</Unit>
+		<Unit filename="/Users/eanmcgilvery/CLionProjects/RAT20F-Compiler/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

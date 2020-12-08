@@ -1,0 +1,12 @@
+/* Test Case 2: < 10 lines of code */
+$$
+int b_;
+real f_, _g;
+b_ = 10;
+f_ = 5.67; /* creating a double */
+_g = 8.90; /*this comment should be ignored*/
+put(f_+_g);
+SYNTAX ERROR HERE
+while( b <= 10)
+  put(b);
+$$

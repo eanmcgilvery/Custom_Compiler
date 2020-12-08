@@ -1,0 +1,305 @@
+========================================
+Token                Lexeme 
+========================================
+
+
+identifier                function
+
+<Rat20F> --> <Opt Function Definitions> $$ <Opt Declaration List> <Statement List> $$
+<Opt Function Definitions> → <Function Definitions> | <Empty>
+<Function Definitions> → <Function> | <Function> <Function Definitions>
+<Function> → function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
+
+identifier                yeett
+
+
+separator                (
+
+
+identifier                haw
+
+<Opt Parameter List> → <Parameter List> | <Empty>
+<Parameter List> → <Parameter> | <Parameter> , <Parameter List>
+<Parameter> → <IDs > <Qualifier>
+<IDs> → <Identifier> | <Identifier>, <IDs>
+
+keyword                real
+
+<Qualifier> → int | boolean | real
+
+separator                )
+
+
+separator                {
+
+<Opt Declaration List> → <Declaration List> | <Empty>
+<Declaration List> → <Declaration> ; | <Declaration> ; <Declaration List>
+<Declaration> → <Qualifier > <IDs>
+<Qualifier> → int | boolean | real
+<Empty> → _____
+<Body> → { < Statement List> }
+
+keyword                return
+
+<Statement List> → <Statement> | <Statement> <Statement List>
+<Statement> → <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Body> → { < Statement List> }
+<Assign> → <Identifier> = <Expression> ;
+<If> → if ( <Condition> ) <Statement> fi | if ( <Condition> ) <Statement> else <Statement> fi
+<Return> → return ; | return <Expression> ;
+
+identifier                haw
+
+<Expression> → <Term><ExpressionPrime>
+<Term> → <Factor><TermPrime>
+<Factor> → - <Primary> | <Primary>
+<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false
+
+operator                -
+
+<TermPrime> → <Empty> | *<Factor><TermPrime> | / <Factor><TermPrime>
+<Empty> → _____
+<ExpressionPrime> → + <Term><ExpressionPrime> |  - <Term><ExpressionPrime> |<epsilon>
+
+real                7.32
+
+<Term> → <Factor><TermPrime>
+<Factor> → - <Primary> | <Primary>
+<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false
+
+separator                ;
+
+<TermPrime> → <Empty> | *<Factor><TermPrime> | / <Factor><TermPrime>
+<Empty> → _____
+<ExpressionPrime> → + <Term><ExpressionPrime> |  - <Term><ExpressionPrime> |<epsilon>
+<Empty> → _____
+
+separator                }
+
+<Statement List> → <Statement> | <Statement> <Statement List>
+<Statement> → <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Body> → { < Statement List> }
+<Assign> → <Identifier> = <Expression> ;
+<If> → if ( <Condition> ) <Statement> fi | if ( <Condition> ) <Statement> else <Statement> fi
+<Return> → return ; | return <Expression> ;
+<Print> → put ( <Expression>);
+<Scan> → get ( <IDs> );
+<While> → while ( <Condition> ) <Statement>
+
+separator                $$
+
+<Function Definitions> → <Function> | <Function> <Function Definitions>
+<Function> → function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>
+
+keyword                real
+
+<Opt Declaration List> → <Declaration List> | <Empty>
+<Declaration List> → <Declaration> ; | <Declaration> ; <Declaration List>
+<Declaration> → <Qualifier > <IDs>
+<Qualifier> → int | boolean | real
+
+identifier                haw
+
+<IDs> → <Identifier> | <Identifier>, <IDs>
+
+separator                ,
+
+
+identifier                thr
+
+<IDs> → <Identifier> | <Identifier>, <IDs>
+
+separator                ,
+
+
+identifier                bust
+
+<IDs> → <Identifier> | <Identifier>, <IDs>
+
+separator                ;
+
+
+keyword                get
+
+<Declaration List> → <Declaration> ; | <Declaration> ; <Declaration List>
+<Declaration> → <Qualifier > <IDs>
+<Qualifier> → int | boolean | real
+<Statement List> → <Statement> | <Statement> <Statement List>
+<Statement> → <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Body> → { < Statement List> }
+<Assign> → <Identifier> = <Expression> ;
+<If> → if ( <Condition> ) <Statement> fi | if ( <Condition> ) <Statement> else <Statement> fi
+<Return> → return ; | return <Expression> ;
+<Print> → put ( <Expression>);
+<Scan> → get ( <IDs> );
+
+separator                (
+
+
+identifier                haw
+
+<IDs> → <Identifier> | <Identifier>, <IDs>
+
+separator                ,
+
+
+identifier                thr
+
+<IDs> → <Identifier> | <Identifier>, <IDs>
+
+separator                ,
+
+
+identifier                bust
+
+<IDs> → <Identifier> | <Identifier>, <IDs>
+
+separator                )
+
+
+separator                ;
+
+
+keyword                while
+
+<Statement List> → <Statement> | <Statement> <Statement List>
+<Statement> → <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Body> → { < Statement List> }
+<Assign> → <Identifier> = <Expression> ;
+<If> → if ( <Condition> ) <Statement> fi | if ( <Condition> ) <Statement> else <Statement> fi
+<Return> → return ; | return <Expression> ;
+<Print> → put ( <Expression>);
+<Scan> → get ( <IDs> );
+<While> → while ( <Condition> ) <Statement>
+
+separator                (
+
+
+identifier                thr
+
+<Condition> → <Expression> <Relop> <Expression>
+<Expression> → <Term><ExpressionPrime>
+<Term> → <Factor><TermPrime>
+<Factor> → - <Primary> | <Primary>
+<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false
+
+operator                <=
+
+<TermPrime> → <Empty> | *<Factor><TermPrime> | / <Factor><TermPrime>
+<Empty> → _____
+<ExpressionPrime> → + <Term><ExpressionPrime> |  - <Term><ExpressionPrime> |<epsilon>
+<Empty> → _____
+<Relop> →  == | !=  | >  | < | <= |  =>
+
+identifier                bust
+
+<Expression> → <Term><ExpressionPrime>
+<Term> → <Factor><TermPrime>
+<Factor> → - <Primary> | <Primary>
+<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false
+
+separator                )
+
+<TermPrime> → <Empty> | *<Factor><TermPrime> | / <Factor><TermPrime>
+<Empty> → _____
+<ExpressionPrime> → + <Term><ExpressionPrime> |  - <Term><ExpressionPrime> |<epsilon>
+<Empty> → _____
+
+separator                {
+
+<Statement> → <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Body> → { < Statement List> }
+
+keyword                put
+
+<Statement List> → <Statement> | <Statement> <Statement List>
+<Statement> → <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Body> → { < Statement List> }
+<Assign> → <Identifier> = <Expression> ;
+<If> → if ( <Condition> ) <Statement> fi | if ( <Condition> ) <Statement> else <Statement> fi
+<Return> → return ; | return <Expression> ;
+<Print> → put ( <Expression>);
+
+separator                (
+
+
+identifier                haw
+
+<Expression> → <Term><ExpressionPrime>
+<Term> → <Factor><TermPrime>
+<Factor> → - <Primary> | <Primary>
+<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false
+
+separator                )
+
+<TermPrime> → <Empty> | *<Factor><TermPrime> | / <Factor><TermPrime>
+<Empty> → _____
+<ExpressionPrime> → + <Term><ExpressionPrime> |  - <Term><ExpressionPrime> |<epsilon>
+<Empty> → _____
+
+separator                ;
+
+
+keyword                put
+
+<Statement List> → <Statement> | <Statement> <Statement List>
+<Statement> → <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Body> → { < Statement List> }
+<Assign> → <Identifier> = <Expression> ;
+<If> → if ( <Condition> ) <Statement> fi | if ( <Condition> ) <Statement> else <Statement> fi
+<Return> → return ; | return <Expression> ;
+<Print> → put ( <Expression>);
+
+separator                (
+
+
+identifier                yeett
+
+<Expression> → <Term><ExpressionPrime>
+<Term> → <Factor><TermPrime>
+<Factor> → - <Primary> | <Primary>
+<Primary> → <Identifier> | <Integer> | <Identifier> ( <IDs> ) | ( <Expression> ) | <Real> | true | false
+
+separator                (
+
+
+identifier                haw
+
+<IDs> → <Identifier> | <Identifier>, <IDs>
+
+separator                )
+
+
+separator                )
+
+<TermPrime> → <Empty> | *<Factor><TermPrime> | / <Factor><TermPrime>
+<Empty> → _____
+<ExpressionPrime> → + <Term><ExpressionPrime> |  - <Term><ExpressionPrime> |<epsilon>
+<Empty> → _____
+
+separator                ;
+
+
+separator                }
+
+<Statement List> → <Statement> | <Statement> <Statement List>
+<Statement> → <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Body> → { < Statement List> }
+<Assign> → <Identifier> = <Expression> ;
+<If> → if ( <Condition> ) <Statement> fi | if ( <Condition> ) <Statement> else <Statement> fi
+<Return> → return ; | return <Expression> ;
+<Print> → put ( <Expression>);
+<Scan> → get ( <IDs> );
+<While> → while ( <Condition> ) <Statement>
+
+separator                $$
+
+<Statement List> → <Statement> | <Statement> <Statement List>
+<Statement> → <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+<Body> → { < Statement List> }
+<Assign> → <Identifier> = <Expression> ;
+<If> → if ( <Condition> ) <Statement> fi | if ( <Condition> ) <Statement> else <Statement> fi
+<Return> → return ; | return <Expression> ;
+<Print> → put ( <Expression>);
+<Scan> → get ( <IDs> );
+<While> → while ( <Condition> ) <Statement>

@@ -1,0 +1,19 @@
+/* this is comment for this sample code which
+converts  Fahrenheit into Celcius */
+
+function yeett (haw real)
+{
+           return haw - 7.32;
+}
+
+$$
+     real haw, thr, bust;
+     /*  yee haw pardner */
+
+get (haw, thr, bust);
+while (thr  <=  bust )
+{  put (haw);
+ put (yeett (haw));
+}
+
+$$
